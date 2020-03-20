@@ -1,8 +1,10 @@
-# Try Out Development Containers: PHP
+# [Chezmoi](https://www.chezmoi.io/) with VSCode remote-containers extension
 
-This is a sample project that lets you try out the **[VS Code Remote - Containers](https://aka.ms/vscode-remote/containers)** extension in a few easy steps.
+This is a sample project that lets you try out the **[VS Code Remote - Containers](https://aka.ms/vscode-remote/containers)** extension installed with Chezmoi tool in a few easy steps.   
 
-> **Note:** If you're following the quick start, you can jump to the [Things to try](#things-to-try) section.
+Chezmoi, is dotfile manager inspired by Puppet.   
+If unknown to you, the first place to check is the [official documentation](https://github.com/twpayne/chezmoi).   
+Then create your own dotfile repository compatible with Chezmoi (this [one](https://github.com/ihommani/chezmoi_dotfiles) can be used for demo purpose). 
 
 ## Setting up the development container
 
@@ -10,66 +12,33 @@ Follow these steps to open this sample in a container:
 
 1. If this is your first time using a development container, please follow the [getting started steps](https://aka.ms/vscode-remote/containers/getting-started).
 
-2. To use this repository, you can either open a locally cloned copy of the code:
+2. To use this repository, you need to open a locally cloned copy of the code:
 
    - Clone this repository to your local filesystem.
+   - [Configure](https://code.visualstudio.com/docs/remote/containers#_personalizing-with-dotfile-repositories) your dotfile repository in VSCode. It will serve as a Chezmoi source of truth. Use `~/.local/share/chezmoi` as the target path. 
+   - Configure adapt `.devcontainer/chezmoi.toml` content. (key should match placeholder in your managed dotfiles)
    - Press <kbd>F1</kbd> and select the **Remote-Containers: Open Folder in Container...** command.
    - Select the cloned copy of this folder, wait for the container to start, and try things out!
 
-   Or open the repository in an isolated Docker volume:
-
-    - Press <kbd>F1</kbd> and select the **Remote-Containers: Try a Sample...** command.
-    - Choose the "PHP" sample, wait for the container to start and try things out!
-        > **Note:** Under the hood, this will use **Remote-Containers: Open Repository in Container...** command to clone the source code in a Docker volume instead of the local filesystem.
-
 ## Things to try
 
-Once you have this sample opened in a container, you'll be able to work with it like you would locally.
+Once you have this sample opened in a container, you'll be able to work with it like you would locally.   
+In particular, check that dotfiles in your home directory should match the target state adapted to your environment.   
 
-> **Note:** This container runs as a non-root user with sudo access by default. Comment out `"remoteUser": "vscode"` in `.devcontainer/devcontainer.json` if you'd prefer to run as root.
+> **Note:** This container runs as a root user by default. Add `"remoteUser": "vscode"` in `.devcontainer/devcontainer.json` if you'd prefer to run as vsCode user.
 
 Some things to try:
 
-1. **Edit:**
-   - Open `index.php`
-   - Try adding some code and check out the language features.
-1. **Terminal:** Press <kbd>ctrl</kbd>+<kbd>shift</kbd>+<kbd>\`</kbd> and type `uname` and other Linux commands from the terminal window.
-1. **Run and Debug:**
-   - Open `index.php`
-   - Add a breakpoint (e.g. on line 4).
-   - Press <kbd>F5</kbd> to launch the app in the container.
-   - Once the breakpoint is hit, try hovering over variables, examining locals, and more.
-1. **Running a server:**
-   - From the terminal, run `php -S 0.0.0.0:8000`
-   - Press <kbd>F1</kbd> and run the **Forward a Port** command.
-   - Select port `8000`.
-   - Click "Open Browser" in the notification that appears to access the web app on this new port.
-   - Look back at the terminal, and you should see the output from your site navigations
-   - Edit the text on line 21 in `index.php` and refresh the page to see the changes immediately take affect
-1. **Attach debugger to the server:**
-   - Follow the previous steps to start up a PHP server and open a browser on port `8000`
-   - Press <kbd>F1</kbd> and select the **View: Show Debug** command
-   - Pick "Listen for XDebug" from the dropdown
-   - Press <kbd>F5</kbd> to attach the debugger
-   - Add a breakpoint to `index.php` if you haven't already
-   - Reload your browser window
-   - Once the breakpoint is hit, try hovering over variables, examining locals, and more.
-
-## Contributing
-
-This project welcomes contributions and suggestions. Most contributions require you to agree to a
-Contributor License Agreement (CLA) declaring that you have the right to, and actually do, grant us
-the rights to use your contribution. For details, visit https://cla.microsoft.com.
-
-When you submit a pull request, a CLA-bot will automatically determine whether you need to provide
-a CLA and decorate the PR appropriately (e.g., label, comment). Simply follow the instructions
-provided by the bot. You will only need to do this once across all repos using our CLA.
-
-This project has adopted the [Microsoft Open Source Code of Conduct](https://opensource.microsoft.com/codeofconduct/).
-For more information see the [Code of Conduct FAQ](https://opensource.microsoft.com/codeofconduct/faq/) or
-contact [opencode@microsoft.com](mailto:opencode@microsoft.com) with any additional questions or comments.
-
-## License
-
-Copyright © Microsoft Corporation All rights reserved.<br />
-Licensed under the MIT License. See LICENSE in the project root for license information.
+1. **Play with Chezmoi:**
+   - Open a terminal
+   - Type `chezmoi`
+2. **Change your source of truth:**
+   - `chezmoi edit [dotfile_of_your_choice]` if already managed. `chezmoi add [new_dotfile]`
+   - `chezmoi cd`
+   - `git commit -m 'Add change to foo dotfile'` && `git push`
+3. **Change the dotfile content according chezmoi.toml values:**
+   - Open a templated dotfile (`chezmoi add -T --autotemplate [new_dotfile]`) or transform an existing one into a template: `chezmoi chattr template ~/managed_dotfile`
+   - Add [conditional](https://pkg.go.dev/text/template?tab=doc) [placeholders](http://masterminds.github.io/sprig/) on values present in the `.devcontainer/chezmoi.toml`.       
+    (add new values in the data section and reference it as `.key_name` in the template)
+   - Press <kbd>F1</kbd> and select the **Remote-Containers: Reopen in Container...** command.. 
+   - See templates outputs being consistent with your chezmoi configuration file values.

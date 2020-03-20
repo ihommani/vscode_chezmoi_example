@@ -1,0 +1,10 @@
+version: "3"
+
+services:
+  webserver:
+    build: 
+      context: ./.devcontainer # We get our docker file from this location. Could be anywhere
+    container_name: 'PHP-samle'
+    restart: 'always'
+    ports:
+      - "3000"

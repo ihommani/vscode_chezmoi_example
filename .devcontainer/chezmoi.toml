@@ -1,0 +1,7 @@
+[data]
+email="ismael.hommani@gmail.fr"
+name= "Ismael Hommani"
+
+[sourceVCS]
+autopush=false
+autocommit=true

@@ -34,6 +34,7 @@ RUN apt-get update \
     && useradd -s /bin/bash --uid $USER_UID --gid $USER_GID -m $USERNAME \
     # [Optional] Add sudo support for the non-root user
     && apt-get install -y sudo \
+    && apt-get install -y vim \
     && echo $USERNAME ALL=\(root\) NOPASSWD:ALL > /etc/sudoers.d/$USERNAME\
     && chmod 0440 /etc/sudoers.d/$USERNAME \
     #
@@ -44,4 +45,3 @@ RUN apt-get update \
 
 # Switch back to dialog for any ad-hoc use of apt-get
 ENV DEBIAN_FRONTEND=dialog
-
