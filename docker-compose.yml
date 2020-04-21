@@ -6,5 +6,31 @@ services:
       context: ./.devcontainer # We get our docker file from this location. Could be anywhere
     container_name: 'PHP-samle'
     restart: 'always'
+    links:
+      - mysql
     ports:
       - "3000"
+  phinx:
+    build: 
+      context: ./.devcontainer # We get our docker file from this location. Could be anywhere
+    container_name: 'PHP-samle'
+    restart: 'always'
+    links:
+      - mysql
+    ports:
+      - "3000"
+  mysql:
+    build:
+      context: "./.devcontainer/mysql"
+    container_name: 'mysql-test'
+    restart: 'always'
+    ports:
+      - "3306:3306"
+    volumes: 
+      - ${MYSQL_DATA_DIR-./data/mysql}:/var/lib/mysql
+      - ${MYSQL_LOG_DIR-./logs/mysql}:/var/log/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: docker
+      MYSQL_USER: docker
+      MYSQL_PASSWORD: docker
