@@ -12,16 +12,14 @@ services:
       - "3000"
   phinx:
     build: 
-      context: ./.devcontainer # We get our docker file from this location. Could be anywhere
-    container_name: 'PHP-samle'
+      context: ./dockerfiles/dbkickstarter
+    container_name: 'dbKickstart'
     restart: 'always'
     links:
       - mysql
-    ports:
-      - "3000"
   mysql:
     build:
-      context: "./.devcontainer/mysql"
+      context: "./dockerfiles/mysql"
     container_name: 'mysql-test'
     restart: 'always'
     ports:
