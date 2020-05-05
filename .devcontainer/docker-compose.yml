@@ -1,6 +1,6 @@
    # We override the original docker-compose file with data specifically needed for the Chezmoi installation
    version: '3'
-    services:
+   services:
       webserver:
         volumes:
           # Update this to wherever you want VS Code to mount the folder of your project. (assumption that the target user is root)
@@ -15,7 +15,11 @@
         # Ssh is needed for Git to clone the Chezmoi source state in the current container.
         # Cloning is taken in charge by VSCode: https://code.visualstudio.com/docs/remote/containers#_personalizing-with-dotfile-repositories
         command: /bin/sh -c "cp -R /tmp/.ssh ~ && chmod -R 600 ~/.ssh && while sleep 1000; do :; done"
-    
+      phinx:
+        volumes: 
+          - .:/workspace:cached
+        working_dir: /workspace
+        entrypoint: /bin/sh -c "phinx seed:run -e development && while sleep 1000; do :; done"
     ## Optionally, you can decide to put your source directory inside a Docker volume and attach it to any needed containers
     #volumes:
     #  chezmoi-source-volume:
